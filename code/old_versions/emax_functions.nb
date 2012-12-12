@@ -1,0 +1,234 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 8.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[      8523,        225]
+NotebookOptionsPosition[      8205,        210]
+NotebookOutlinePosition[      8585,        226]
+CellTagsIndexPosition[      8542,        223]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+    "BaseDir", "=", 
+     "\"\<C:\\\\Users\\\\Tim\\\\Dropbox\\\\Current \
+Projects\\\\mathematica\\\\Tim\\\\dynamic_model\>\""}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"CodeDir", "=", 
+     RowBox[{"BaseDir", "<>", "\"\<\\\\code\>\""}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"DataDir", "=", 
+     RowBox[{"BaseDir", "<>", "\"\<\\\\data\>\""}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"FigDir", "=", 
+     RowBox[{"BaseDir", "<>", "\"\<\\\\figures\>\""}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"OutputDir", "=", 
+     RowBox[{"BaseDir", "<>", "\"\<\\\\output\>\""}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"TableDir", "=", 
+     RowBox[{"BaseDir", "<>", "\"\<\\\\tables\>\""}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"Get", "[", 
+    RowBox[{"OutputDir", "<>", "\"\<\\settings.mx\>\""}], "]"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"GMult", "[", 
+     RowBox[{"a_", ",", "b_"}], "]"}], ":=", 
+    RowBox[{"(", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"prod", "=", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"VectorQ", "[", "a", "]"}], ",", 
+         RowBox[{"b", ".", "a"}], ",", 
+         RowBox[{"b", "*", "a"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"Return", "[", "prod", "]"}], ";"}], "\[IndentingNewLine]", 
+     ")"}]}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"\[CapitalPhi]", "[", "c_", "]"}], ":=", 
+     RowBox[{"CDF", "[", 
+      RowBox[{
+       RowBox[{"NormalDistribution", "[", 
+        RowBox[{"0", ",", "1"}], "]"}], ",", "c"}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"\[Phi]", "[", "c_", "]"}], ":=", 
+     RowBox[{"PDF", "[", 
+      RowBox[{
+       RowBox[{"NormalDistribution", "[", 
+        RowBox[{"0", ",", "1"}], "]"}], ",", "c"}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"FEmaxT", "[", 
+     RowBox[{
+     "y_", ",", "z_", ",", "h_", ",", "n_", ",", "k_", ",", "\[Gamma]1_", ",",
+       "\[Gamma]2_", ",", "\[Beta]k_", ",", "\[Beta]n_", ",", 
+      "\[Sigma]\[Xi]_"}], "]"}], ":=", 
+    RowBox[{"(", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"\[Xi]", "=", 
+       RowBox[{
+        RowBox[{"GMult", "[", 
+         RowBox[{"\[Gamma]1", ",", "z"}], "]"}], "+", 
+        RowBox[{"GMult", "[", 
+         RowBox[{"\[Gamma]2", ",", "h"}], "]"}], "-", 
+        RowBox[{"GMult", "[", 
+         RowBox[{"\[Beta]n", ",", "n"}], "]"}], "-", 
+        RowBox[{"GMult", "[", 
+         RowBox[{"\[Beta]k", ",", "k"}], "]"}]}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"EmaxT", "=", 
+       RowBox[{"y", "+", 
+        RowBox[{
+         RowBox[{"GMult", "[", 
+          RowBox[{"\[Beta]k", ",", "k"}], "]"}], "*", 
+         RowBox[{"\[CapitalPhi]", "[", 
+          RowBox[{"-", "\[Xi]"}], "]"}]}], "+", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"GMult", "[", 
+            RowBox[{"\[Gamma]1", ",", "z"}], "]"}], "+", 
+           RowBox[{"GMult", "[", 
+            RowBox[{"\[Gamma]2", ",", "h"}], "]"}], "-", 
+           RowBox[{"GMult", "[", 
+            RowBox[{"\[Beta]n", ",", "n"}], "]"}]}], ")"}], "*", 
+         RowBox[{"(", 
+          RowBox[{"1", "-", 
+           RowBox[{"\[CapitalPhi]", "[", 
+            RowBox[{"-", "\[Xi]"}], "]"}]}], ")"}]}], "+", 
+        RowBox[{"\[Sigma]\[Xi]", "*", 
+         RowBox[{"\[Phi]", "[", 
+          RowBox[{"-", "\[Xi]"}], "]"}]}]}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"Return", "[", "EmaxT", "]"}], ";"}], "\[IndentingNewLine]", 
+     ")"}]}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"FEmaxT1", "[", 
+     RowBox[{
+     "y_", ",", "z_", ",", "h_", ",", "n_", ",", "k_", ",", "\[Gamma]1_", ",",
+       "\[Gamma]2_", ",", "\[Beta]k_", ",", "\[Beta]n_", ",", 
+      "\[Sigma]\[Xi]_", ",", "\[Delta]_"}], "]"}], ":=", 
+    RowBox[{"(", "\[IndentingNewLine]", " ", 
+     RowBox[{
+      RowBox[{"EmaxTh0", "=", 
+       RowBox[{"FEmaxT", "[", 
+        RowBox[{
+        "y", ",", "z", ",", "h", ",", "n", ",", "k", ",", "\[Gamma]1", ",", 
+         "\[Gamma]2", ",", "\[Beta]k", ",", "\[Beta]n", ",", 
+         "\[Sigma]\[Xi]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"EmaxTh1", "=", 
+       RowBox[{"FEmaxT", "[", 
+        RowBox[{"y", ",", "z", ",", 
+         RowBox[{"h", "+", "1"}], ",", "n", ",", "k", ",", "\[Gamma]1", ",", 
+         "\[Gamma]2", ",", "\[Beta]k", ",", "\[Beta]n", ",", 
+         "\[Sigma]\[Xi]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{"\[Xi]", "=", 
+       RowBox[{
+        RowBox[{"GMult", "[", 
+         RowBox[{"\[Gamma]1", ",", "z"}], "]"}], "+", 
+        RowBox[{"GMult", "[", 
+         RowBox[{"\[Gamma]2", ",", "h"}], "]"}], "-", 
+        RowBox[{"GMult", "[", 
+         RowBox[{"\[Beta]n", ",", "n"}], "]"}], "-", 
+        RowBox[{"GMult", "[", 
+         RowBox[{"\[Beta]k", ",", "k"}], "]"}], "+", 
+        RowBox[{"\[Delta]", "*", 
+         RowBox[{"(", 
+          RowBox[{"EmaxTh1", "-", "EmaxTh0"}], ")"}]}]}]}], ";", 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"EmaxT1", "=", 
+       RowBox[{"y", "+", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"GMult", "[", 
+            RowBox[{"\[Beta]k", ",", "k"}], "]"}], "+", 
+           RowBox[{"\[Delta]", "*", "EmaxTh0"}]}], ")"}], "*", 
+         RowBox[{"\[CapitalPhi]", "[", 
+          RowBox[{"-", "\[Xi]"}], "]"}]}], "+", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"GMult", "[", 
+            RowBox[{"\[Gamma]1", ",", "z"}], "]"}], "+", 
+           RowBox[{"GMult", "[", 
+            RowBox[{"\[Gamma]2", ",", "h"}], "]"}], "-", 
+           RowBox[{"GMult", "[", 
+            RowBox[{"\[Beta]n", ",", "n"}], "]"}], "+", 
+           RowBox[{"\[Delta]", "*", "EmaxTh1"}]}], ")"}], "*", 
+         RowBox[{"(", 
+          RowBox[{"1", "-", 
+           RowBox[{"\[CapitalPhi]", "[", 
+            RowBox[{"-", "\[Xi]"}], "]"}]}], ")"}]}], "+", 
+        RowBox[{"\[Sigma]\[Xi]", "*", 
+         RowBox[{"\[Phi]", "[", 
+          RowBox[{"-", "\[Xi]"}], "]"}]}]}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"Return", "[", "EmaxT1", "]"}], ";"}], "\[IndentingNewLine]", 
+     ")"}]}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"DumpSave", "[", 
+    RowBox[{
+     RowBox[{"OutputDir", "<>", "\"\<\\\\Emax.mx\>\""}], ",", 
+     RowBox[{"{", 
+      RowBox[{"FEmaxT", ",", "FEmaxT1"}], "}"}]}], "]"}]}]}]], "Input",
+ CellChangeTimes->{{3.5618270115724845`*^9, 3.56182712443694*^9}, {
+   3.561827377631422*^9, 3.5618273789764986`*^9}, {3.5618277750281515`*^9, 
+   3.5618278955820465`*^9}, {3.5618281759260817`*^9, 3.561828177876193*^9}, {
+   3.5618289859684134`*^9, 3.5618290109038396`*^9}, {3.5618445670964975`*^9, 
+   3.5618448292081575`*^9}, {3.5618458470787*^9, 3.561845853942712*^9}, 
+   3.561845926248839*^9, {3.5618459596484976`*^9, 3.5618459611461*^9}, 
+   3.561846052655861*^9, 3.5618460999863443`*^9, 3.562081125624837*^9, {
+   3.5620812825148106`*^9, 3.5620812854289775`*^9}, {3.562081334372777*^9, 
+   3.56208133494681*^9}, {3.56208138845287*^9, 3.5620813891799116`*^9}, {
+   3.562082922302601*^9, 3.5620829305260715`*^9}, {3.5620830021141663`*^9, 
+   3.562083022065307*^9}, {3.5620830640337076`*^9, 3.562083064649743*^9}}],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{3.562083077568482*^9}]
+},
+WindowSize->{1662, 829},
+WindowMargins->{{408, Automatic}, {-47, Automatic}},
+Magnification->2.299999952316284,
+FrontEndVersion->"8.0 for Microsoft Windows (64-bit) (October 6, 2011)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[557, 20, 7573, 185, 1509, "Input"],
+Cell[8133, 207, 68, 1, 65, "Input"]
+}
+]
+*)
+
+(* End of internal cache information *)

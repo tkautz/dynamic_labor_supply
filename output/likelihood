@@ -1,0 +1,125 @@
+loglik[y_, d1_, d2_, d3_, h1_, h2_, h3_, w1_, w2_, w3_, z_, n_, k_, M_, 
+     \[Gamma]1_, \[Gamma]2_, \[Beta]\[Pi]_, \[Beta]k_, \[Delta]_, \[Rho]_, 
+     \[Sigma]\[Epsilon]_, \[Sigma]\[Eta]_] := (minlog = 10^(-2000); 
+     \[Omega]1 = w1 - \[Gamma]1*z - \[Gamma]2*h1; 
+     \[Omega]2 = w2 - \[Gamma]1*z - \[Gamma]2*h2; 
+     \[Omega]3 = w3 - \[Gamma]1*z - \[Gamma]2*h3; 
+     \[Xi]1 = z*\[Gamma]1 + \[Gamma]2*h1 - \[Beta]\[Pi]*n - k*\[Beta]k + 
+       \[Delta]*(FEmaxT1[y, z, h1 + 1, n, k, \[Gamma]1, \[Gamma]2, \[Beta]k, 
+          \[Beta]\[Pi], \[Sigma]\[Epsilon], \[Delta]] - FEmaxT1[y, z, h1, n, 
+          k, \[Gamma]1, \[Gamma]2, \[Beta]k, \[Beta]\[Pi], 
+          \[Sigma]\[Epsilon], \[Delta]]); 
+     \[Xi]2 = z*\[Gamma]1 + \[Gamma]2*h2 - \[Beta]\[Pi]*n - k*\[Beta]k + 
+       \[Delta]*(FEmaxT[y, z, h2 + 1, n, k, \[Gamma]1, \[Gamma]2, \[Beta]k, 
+          \[Beta]\[Pi], \[Sigma]\[Epsilon]] - FEmaxT[y, z, h2, n, k, 
+          \[Gamma]1, \[Gamma]2, \[Beta]k, \[Beta]\[Pi], \[Sigma]\[Epsilon]]); 
+     \[Xi]3 = z*\[Gamma]1 + \[Gamma]2*h3 - \[Beta]\[Pi]*n - k*\[Beta]k; 
+     \[ScriptCapitalL] = 
+      -Total[Table[d1[[i]]*Log[Max[(1 - \[CapitalPhi][(-\[Xi]1[[i]] - 
+                  \[Rho]*(\[Sigma]\[Epsilon]/\[Sigma]\[Eta])*\[Omega]1[[i]])/
+                 (\[Sigma]\[Epsilon]*(1 - \[Rho]^2)^0.5)])*(1/\[Sigma]\[Eta])*
+              \[Phi][\[Omega]1[[i]]/\[Sigma]\[Eta]], minlog]] + 
+          (1 - d1[[i]])*Log[Max[\[CapitalPhi][-(\[Xi]1[[i]]/
+                \[Sigma]\[Epsilon])], minlog]] + 
+          d2[[i]]*Log[Max[(1 - \[CapitalPhi][(-\[Xi]2[[i]] - \[Rho]*
+                   (\[Sigma]\[Epsilon]/\[Sigma]\[Eta])*\[Omega]2[[i]])/
+                 (\[Sigma]\[Epsilon]*(1 - \[Rho]^2)^0.5)])*(1/\[Sigma]\[Eta])*
+              \[Phi][\[Omega]2[[i]]/\[Sigma]\[Eta]], minlog]] + 
+          (1 - d2[[i]])*Log[Max[\[CapitalPhi][-(\[Xi]2[[i]]/
+                \[Sigma]\[Epsilon])], minlog]] + 
+          d3[[i]]*Log[Max[(1 - \[CapitalPhi][(-\[Xi]3[[i]] - \[Rho]*
+                   (\[Sigma]\[Epsilon]/\[Sigma]\[Eta])*\[Omega]3[[i]])/
+                 (\[Sigma]\[Epsilon]*(1 - \[Rho]^2)^0.5)])*(1/\[Sigma]\[Eta])*
+              \[Phi][\[Omega]3[[i]]/\[Sigma]\[Eta]], minlog]] + 
+          (1 - d3[[i]])*Log[Max[\[CapitalPhi][-(\[Xi]3[[i]]/
+                \[Sigma]\[Epsilon])], minlog]], {i, 1, M, 1}]]; 
+     Return[\[ScriptCapitalL]]; )
+ 
+FEmaxT1[y_, z_, h_, n_, k_, \[Gamma]1_, \[Gamma]2_, \[Beta]k_, \[Beta]n_, 
+     \[Sigma]\[Xi]_, \[Delta]_] := 
+    (EmaxTh0 = FEmaxT[y, z, h, n, k, \[Gamma]1, \[Gamma]2, \[Beta]k, 
+       \[Beta]n, \[Sigma]\[Xi]]; EmaxTh1 = FEmaxT[y, z, h + 1, n, k, 
+       \[Gamma]1, \[Gamma]2, \[Beta]k, \[Beta]n, \[Sigma]\[Xi]]; 
+     \[Xi] = GMult[\[Gamma]1, z] + GMult[\[Gamma]2, h] - GMult[\[Beta]n, n] - 
+       GMult[\[Beta]k, k] + \[Delta]*(EmaxTh1 - EmaxTh0); 
+     EmaxT1 = y + (GMult[\[Beta]k, k] + \[Delta]*EmaxTh0)*
+        \[CapitalPhi][-\[Xi]] + (GMult[\[Gamma]1, z] + GMult[\[Gamma]2, h] - 
+         GMult[\[Beta]n, n] + \[Delta]*EmaxTh1)*(1 - \[CapitalPhi][-\[Xi]]) + 
+       \[Sigma]\[Xi]*\[Phi][-\[Xi]]; Return[EmaxT1]; )
+ 
+FEmaxT[y_, z_, h_, n_, k_, \[Gamma]1_, \[Gamma]2_, \[Beta]k_, \[Beta]n_, 
+     \[Sigma]\[Xi]_] := (\[Xi] = GMult[\[Gamma]1, z] + GMult[\[Gamma]2, h] - 
+       GMult[\[Beta]n, n] - GMult[\[Beta]k, k]; 
+     EmaxT = y + GMult[\[Beta]k, k]*\[CapitalPhi][-\[Xi]] + 
+       (GMult[\[Gamma]1, z] + GMult[\[Gamma]2, h] - GMult[\[Beta]n, n])*
+        (1 - \[CapitalPhi][-\[Xi]]) + \[Sigma]\[Xi]*\[Phi][-\[Xi]]; 
+     Return[EmaxT]; )
+ 
+GMult[a_, b_] := (prod = If[VectorQ[a], b . a, b*a]; Return[prod]; )
+ 
+\[CapitalPhi][c_] := CDF[NormalDistribution[0, 1], c]
+ 
+\[Phi][c_] := PDF[NormalDistribution[0, 1], c]
+loglik[y_, d1_, d2_, d3_, h1_, h2_, h3_, w1_, w2_, w3_, z_, n_, k_, M_, 
+     \[Gamma]1_, \[Gamma]2_, \[Beta]n_, \[Beta]k_, \[Delta]_, \[Rho]_, 
+     \[Sigma]\[Epsilon]_, \[Sigma]\[Eta]_] := (minlog = 10^(-2000); 
+     \[Omega]1 = w1 - GMult[\[Gamma]1, z] - GMult[\[Gamma]2, h1]; 
+     \[Omega]2 = w2 - GMult[\[Gamma]1, z] - GMult[\[Gamma]2, h2]; 
+     \[Omega]3 = w3 - GMult[\[Gamma]1, z] - GMult[\[Gamma]2, h3]; 
+     \[Xi]1 = GMult[\[Gamma]1, z] + GMult[\[Gamma]2, h1] - 
+       GMult[\[Beta]n, n] - GMult[\[Beta]k, k] + 
+       \[Delta]*(FEmaxT1[y, z, h1 + 1, n, k, \[Gamma]1, \[Gamma]2, \[Beta]k, 
+          \[Beta]n, \[Sigma]\[Epsilon], \[Delta]] - FEmaxT1[y, z, h1, n, k, 
+          \[Gamma]1, \[Gamma]2, \[Beta]k, \[Beta]n, \[Sigma]\[Epsilon], 
+          \[Delta]]); \[Xi]2 = GMult[\[Gamma]1, z] + GMult[\[Gamma]2, h2] - 
+       GMult[\[Beta]n, n] - GMult[\[Beta]k, k] + 
+       \[Delta]*(FEmaxT[y, z, h2 + 1, n, k, \[Gamma]1, \[Gamma]2, \[Beta]k, 
+          \[Beta]n, \[Sigma]\[Epsilon]] - FEmaxT[y, z, h2, n, k, \[Gamma]1, 
+          \[Gamma]2, \[Beta]k, \[Beta]n, \[Sigma]\[Epsilon]]); 
+     \[Xi]3 = GMult[\[Gamma]1, z] + GMult[\[Gamma]2, h3] - 
+       GMult[\[Beta]n, n] - GMult[\[Beta]k, k]; \[ScriptCapitalL] = 
+      -Total[Table[d1[[i]]*Log[Max[(1 - \[CapitalPhi][(-\[Xi]1[[i]] - 
+                  \[Rho]*(\[Sigma]\[Epsilon]/\[Sigma]\[Eta])*\[Omega]1[[i]])/
+                 (\[Sigma]\[Epsilon]*(1 - \[Rho]^2)^0.5)])*(1/\[Sigma]\[Eta])*
+              \[Phi][\[Omega]1[[i]]/\[Sigma]\[Eta]], minlog]] + 
+          (1 - d1[[i]])*Log[Max[\[CapitalPhi][-(\[Xi]1[[i]]/
+                \[Sigma]\[Epsilon])], minlog]] + 
+          d2[[i]]*Log[Max[(1 - \[CapitalPhi][(-\[Xi]2[[i]] - \[Rho]*
+                   (\[Sigma]\[Epsilon]/\[Sigma]\[Eta])*\[Omega]2[[i]])/
+                 (\[Sigma]\[Epsilon]*(1 - \[Rho]^2)^0.5)])*(1/\[Sigma]\[Eta])*
+              \[Phi][\[Omega]2[[i]]/\[Sigma]\[Eta]], minlog]] + 
+          (1 - d2[[i]])*Log[Max[\[CapitalPhi][-(\[Xi]2[[i]]/
+                \[Sigma]\[Epsilon])], minlog]] + 
+          d3[[i]]*Log[Max[(1 - \[CapitalPhi][(-\[Xi]3[[i]] - \[Rho]*
+                   (\[Sigma]\[Epsilon]/\[Sigma]\[Eta])*\[Omega]3[[i]])/
+                 (\[Sigma]\[Epsilon]*(1 - \[Rho]^2)^0.5)])*(1/\[Sigma]\[Eta])*
+              \[Phi][\[Omega]3[[i]]/\[Sigma]\[Eta]], minlog]] + 
+          (1 - d3[[i]])*Log[Max[\[CapitalPhi][-(\[Xi]3[[i]]/
+                \[Sigma]\[Epsilon])], minlog]], {i, 1, M, 1}]]; 
+     Return[\[ScriptCapitalL]]; )
+ 
+GMult[a_, b_] := (prod = If[VectorQ[a], b . a, b*a]; Return[prod]; )
+ 
+FEmaxT1[y_, z_, h_, n_, k_, \[Gamma]1_, \[Gamma]2_, \[Beta]k_, \[Beta]n_, 
+     \[Sigma]\[Xi]_, \[Delta]_] := 
+    (EmaxTh0 = FEmaxT[y, z, h, n, k, \[Gamma]1, \[Gamma]2, \[Beta]k, 
+       \[Beta]n, \[Sigma]\[Xi]]; EmaxTh1 = FEmaxT[y, z, h + 1, n, k, 
+       \[Gamma]1, \[Gamma]2, \[Beta]k, \[Beta]n, \[Sigma]\[Xi]]; 
+     \[Xi] = GMult[\[Gamma]1, z] + GMult[\[Gamma]2, h] - GMult[\[Beta]n, n] - 
+       GMult[\[Beta]k, k] + \[Delta]*(EmaxTh1 - EmaxTh0); 
+     EmaxT1 = y + (GMult[\[Beta]k, k] + \[Delta]*EmaxTh0)*
+        \[CapitalPhi][-\[Xi]] + (GMult[\[Gamma]1, z] + GMult[\[Gamma]2, h] - 
+         GMult[\[Beta]n, n] + \[Delta]*EmaxTh1)*(1 - \[CapitalPhi][-\[Xi]]) + 
+       \[Sigma]\[Xi]*\[Phi][-\[Xi]]; Return[EmaxT1]; )
+ 
+FEmaxT[y_, z_, h_, n_, k_, \[Gamma]1_, \[Gamma]2_, \[Beta]k_, \[Beta]n_, 
+     \[Sigma]\[Xi]_] := (\[Xi] = GMult[\[Gamma]1, z] + GMult[\[Gamma]2, h] - 
+       GMult[\[Beta]n, n] - GMult[\[Beta]k, k]; 
+     EmaxT = y + GMult[\[Beta]k, k]*\[CapitalPhi][-\[Xi]] + 
+       (GMult[\[Gamma]1, z] + GMult[\[Gamma]2, h] - GMult[\[Beta]n, n])*
+        (1 - \[CapitalPhi][-\[Xi]]) + \[Sigma]\[Xi]*\[Phi][-\[Xi]]; 
+     Return[EmaxT]; )
+ 
+\[CapitalPhi][c_] := CDF[NormalDistribution[0, 1], c]
+ 
+\[Phi][c_] := PDF[NormalDistribution[0, 1], c]

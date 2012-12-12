@@ -1,0 +1,521 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 8.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[     18102,        512]
+NotebookOptionsPosition[     17334,        483]
+NotebookOutlinePosition[     17817,        502]
+CellTagsIndexPosition[     17774,        499]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"Clear", "[", "\"\<Global`*\>\"", "]"}], "\[IndentingNewLine]", 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "Assigns", " ", "the", " ", "directories", " ", "for", " ", "the", " ", 
+    "project"}], " ", "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+  "BaseDir", "=", 
+   "\"\<C:\\\\Users\\\\Tim\\\\Dropbox\\\\Current \
+Projects\\\\mathematica\\\\Tim\\\\dynamic_model\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"CodeDir", "=", 
+   RowBox[{"BaseDir", "<>", "\"\<\\\\code\>\""}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"DataDir", "=", 
+   RowBox[{"BaseDir", "<>", "\"\<\\\\data\>\""}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"FigDir", "=", 
+   RowBox[{"BaseDir", "<>", "\"\<\\\\figures\>\""}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"OutputDir", "=", 
+   RowBox[{"BaseDir", "<>", "\"\<\\\\output\>\""}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"TableDir", "=", 
+    RowBox[{"BaseDir", "<>", "\"\<\\\\tables\>\""}]}], ";"}], 
+  "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{"sets", " ", "the", " ", "sample", " ", "size"}], " ", 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"M", "=", "1000"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"T", "=", "3"}], ";"}], "\n", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "Sets", " ", "the", " ", "initial", " ", "parameter", " ", "values", " ", 
+    "and", " ", "iteration", " ", "values"}], " ", 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"g1", "=", 
+   RowBox[{"{", 
+    RowBox[{"1", ",", 
+     RowBox[{"-", "4"}], ",", "5"}], "}"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"g2", "=", "1"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Bn", "=", 
+   RowBox[{"{", "3", "}"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Bk", "=", 
+   RowBox[{"{", 
+    RowBox[{"2", ",", 
+     RowBox[{"-", "2"}]}], "}"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"p\[Epsilon]", "=", "2"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"p\[Eta]", "=", "2"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"p\[Epsilon]\[Eta]", "=", "1.5"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"m\[Epsilon]", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"m\[Eta]", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"delta", "=", ".5"}], ";"}], "\[IndentingNewLine]", 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "calcuates", " ", "other", " ", "parameter", " ", "values", " ", "based", 
+    " ", "on", " ", "the", " ", "input"}], " ", 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"stdxi", "=", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{"p\[Epsilon]", "+", "p\[Eta]", "-", 
+      RowBox[{"2", "*", "p\[Epsilon]\[Eta]"}]}], ")"}], "^", ".5"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"stdeta", "=", 
+   RowBox[{"p\[Eta]", "^", ".5"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"rho", "=", 
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{"p\[Eta]", "-", "p\[Epsilon]\[Eta]"}], ")"}], "/", 
+     RowBox[{"(", 
+      RowBox[{"stdxi", "*", "stdeta"}], ")"}]}]}], ";"}], 
+  "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "Sets", " ", "number", " ", "of", " ", "iterations", " ", "for", " ", 
+    "bootstrap"}], " ", "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"iter", "=", "2"}], ";"}], "\[IndentingNewLine]", 
+  "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "Saves", " ", "the", " ", "directories", " ", "and", " ", "other", " ", 
+    "input", " ", "for", " ", "use", " ", "in", " ", "the", " ", "remaining", 
+    " ", "programs"}], " ", "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"DumpSave", "[", 
+    RowBox[{
+     RowBox[{"OutputDir", "<>", "\"\<\\\\settings.mx\>\""}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+      "BaseDir", ",", "CodeDir", ",", "DataDir", ",", "FigDir", ",", 
+       "OutputDir", ",", "TableDir", ",", "M", ",", "T", ",", "g1", ",", "g2",
+        ",", "Bn", ",", "Bk", ",", "p\[Epsilon]", ",", "p\[Eta]", ",", 
+       "p\[Epsilon]\[Eta]", ",", "m\[Epsilon]", ",", "m\[Eta]", ",", "delta", 
+       ",", "stdxi", ",", "stdeta", ",", "rho", ",", " ", "iter"}], "}"}]}], 
+    "]"}], ";"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{"Runs", " ", "the", " ", "remaining", " ", "files"}], " ", "*)"}], 
+  "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "Defnes", " ", "the", " ", "emax", " ", "functions", " ", "for", " ", 
+    "later", " ", "use"}], " ", "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Get", "[", 
+   RowBox[{"CodeDir", "<>", "\"\<\\\\emax_functions.m\>\""}], "]"}], 
+  "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{"Draws", " ", "the", " ", "simulate", " ", "data"}], " ", 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Get", "[", 
+   RowBox[{"CodeDir", "<>", "\"\<\\\\draw_data.m\>\""}], "]"}], 
+  "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "Creates", " ", "the", " ", "likelihood", " ", "function", " ", "to", " ", 
+    "be", " ", "estimated"}], " ", "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Get", "[", 
+   RowBox[{"CodeDir", "<>", "\"\<\\\\read_likelihood.m\>\""}], "]"}], 
+  "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{"Estimates", " ", "the", " ", "model"}], " ", 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Get", "[", 
+   RowBox[{"CodeDir", "<>", "\"\<\\\\estimate_model.m\>\""}], "]"}], 
+  "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]"}], "Input",
+ CellChangeTimes->{{3.561763309871956*^9, 3.5617633143492117`*^9}, {
+   3.561763350303268*^9, 3.561763552764848*^9}, {3.5617636122522507`*^9, 
+   3.561763612468263*^9}, {3.561763658188878*^9, 3.561763811290635*^9}, {
+   3.5617641298118534`*^9, 3.5617641574914365`*^9}, {3.561764487961338*^9, 
+   3.5617645121727233`*^9}, {3.5617685237861743`*^9, 3.5617685283004327`*^9}, 
+   3.5620801621987324`*^9, {3.5620804124110436`*^9, 3.562080414932188*^9}, {
+   3.562081673850194*^9, 3.5620816988106213`*^9}, {3.562081728940345*^9, 
+   3.562081821682649*^9}, 3.5620818546195335`*^9, {3.562081922306405*^9, 
+   3.5620819230844493`*^9}, {3.562082298920946*^9, 3.562082307230421*^9}, {
+   3.5620831736109753`*^9, 3.562083201692581*^9}, {3.5620833621047564`*^9, 
+   3.562083366729021*^9}, {3.5620846316563706`*^9, 3.5620846480483084`*^9}, {
+   3.562085031722253*^9, 3.562085046222082*^9}, 3.5620852757812123`*^9, {
+   3.562107835061589*^9, 3.5621078442131124`*^9}, 3.562108403854122*^9, {
+   3.5621119287507343`*^9, 3.5621119298837996`*^9}, {3.562115870448187*^9, 
+   3.562115875887498*^9}, 3.562119959352059*^9, {3.5621202576971235`*^9, 
+   3.5621202578471317`*^9}, {3.5621210910937905`*^9, 3.562121095676053*^9}, 
+   3.5621211412216578`*^9, 3.562121302389876*^9, {3.5621216871338825`*^9, 
+   3.5621216874569006`*^9}, {3.5621217699416184`*^9, 
+   3.5621217711846895`*^9}, {3.562121923390395*^9, 3.562121926770589*^9}, {
+   3.5621220359248323`*^9, 3.5621220510586977`*^9}, 3.5621228393907876`*^9, {
+   3.5621229026394053`*^9, 3.5621229063986197`*^9}, {3.5621236215865264`*^9, 
+   3.562123621940547*^9}, {3.5621239659602237`*^9, 3.562123966107232*^9}, {
+   3.5621248575853434`*^9, 3.562124861792584*^9}, 3.5621257262886057`*^9, {
+   3.562125997142776*^9, 3.5621259975951767`*^9}, {3.562130795235978*^9, 
+   3.562130804214492*^9}, {3.562132716611801*^9, 3.5621327170828285`*^9}, 
+   3.5621658042264657`*^9, {3.562170357397148*^9, 3.5621703626871557`*^9}, {
+   3.5637873856416955`*^9, 3.563787418152152*^9}, {3.5638255398790607`*^9, 
+   3.5638255530068116`*^9}, {3.5638291766670732`*^9, 
+   3.5638291772491064`*^9}, {3.5638305221370296`*^9, 
+   3.5638305366648607`*^9}, {3.563881290595131*^9, 3.5638812972205095`*^9}, 
+   3.5638840676249676`*^9, {3.563885182489734*^9, 3.563885198138629*^9}, {
+   3.5638965252970624`*^9, 3.56389652542807*^9}, {3.5639461191873727`*^9, 
+   3.5639461194123726`*^9}, {3.5641597969603615`*^9, 
+   3.5641598625685825`*^9}, {3.5641599037120094`*^9, 3.564159952613613*^9}, {
+   3.5642313365232105`*^9, 3.564231341660505*^9}, {3.5642328536169834`*^9, 
+   3.5642328570171785`*^9}, {3.564233692224949*^9, 3.5642337012814674`*^9}},
+ EmphasizeSyntaxErrors->True],
+
+Cell[CellGroupData[{
+
+Cell[BoxData["\<\"Finished Creating Emax functions.\"\>"], "Print",
+ CellChangeTimes->{3.564233705102686*^9}],
+
+Cell[BoxData["\<\"Finished drawing 1000 observations.\"\>"], "Print",
+ CellChangeTimes->{3.5642337059177322`*^9}],
+
+Cell[BoxData["\<\"Finished reading likelihood function.\"\>"], "Print",
+ CellChangeTimes->{3.5642337059337335`*^9}],
+
+Cell[BoxData[
+ TagBox[
+  TagBox[GridBox[{
+     {"\<\"Param\"\>", "\<\"Est.\"\>", "\<\"True\"\>"},
+     {"\[Gamma]11", 
+      InterpretationBox["\<\" 1.004\"\>",
+       1.0041470813177515`,
+       AutoDelete->True], 
+      InterpretationBox["\<\" 1.000\"\>",
+       1,
+       Editable->False]},
+     {"\[Gamma]12", 
+      InterpretationBox["\<\"-3.989\"\>",
+       -3.9891828623339953`,
+       AutoDelete->True], 
+      InterpretationBox["\<\"-4.000\"\>",
+       -4,
+       Editable->False]},
+     {"\[Gamma]13", 
+      InterpretationBox["\<\" 4.972\"\>",
+       4.971522515545273,
+       AutoDelete->True], 
+      InterpretationBox["\<\" 5.000\"\>",
+       5,
+       Editable->False]},
+     {"\[Gamma]2", 
+      InterpretationBox["\<\" 1.013\"\>",
+       1.0133240715545317`,
+       AutoDelete->True], 
+      InterpretationBox["\<\" 1.000\"\>",
+       1,
+       Editable->False]},
+     {"\[Beta]n1", 
+      InterpretationBox["\<\" 3.015\"\>",
+       3.014549958246819,
+       AutoDelete->True], 
+      InterpretationBox["\<\" 3.000\"\>",
+       3,
+       Editable->False]},
+     {"\[Beta]k1", 
+      InterpretationBox["\<\" 1.933\"\>",
+       1.9325019688581235`,
+       AutoDelete->True], 
+      InterpretationBox["\<\" 2.000\"\>",
+       2,
+       Editable->False]},
+     {"\[Beta]k2", 
+      InterpretationBox["\<\"-1.942\"\>",
+       -1.941894009747406,
+       AutoDelete->True], 
+      InterpretationBox["\<\"-2.000\"\>",
+       -2,
+       Editable->False]},
+     {"\[Delta]", 
+      InterpretationBox["\<\" 0.348\"\>",
+       0.34847487102640584`,
+       AutoDelete->True], 
+      InterpretationBox["\<\" 0.500\"\>",
+       0.5,
+       AutoDelete->True]},
+     {"\[Rho]", 
+      InterpretationBox["\<\" 0.330\"\>",
+       0.329891626412053,
+       AutoDelete->True], 
+      InterpretationBox["\<\" 0.354\"\>",
+       0.35355339059327373`,
+       AutoDelete->True]},
+     {"\[Sigma]\[Epsilon]", 
+      InterpretationBox["\<\" 0.874\"\>",
+       0.8739305684438259,
+       AutoDelete->True], 
+      InterpretationBox["\<\" 1.000\"\>",
+       1.,
+       AutoDelete->True]},
+     {"\[Sigma]\[Eta]", 
+      InterpretationBox["\<\" 1.394\"\>",
+       1.3935216616110773`,
+       AutoDelete->True], 
+      InterpretationBox["\<\" 1.414\"\>",
+       1.4142135623730951`,
+       AutoDelete->True]}
+    },
+    GridBoxAlignment->{
+     "Columns" -> {{Left}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+      "RowsIndexed" -> {}},
+    GridBoxSpacings->{"Columns" -> {
+        Offset[0.27999999999999997`], {
+         Offset[2.0999999999999996`]}, 
+        Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+        Offset[0.2], {
+         Offset[0.4]}, 
+        Offset[0.2]}, "RowsIndexed" -> {}}],
+   Function[BoxForm`e$, 
+    TableForm[BoxForm`e$]]],
+  NumberForm[#, {4, 3}, NumberSigns -> {"-", " "}]& ]], "Print",
+ CellChangeTimes->{3.5642338482388725`*^9}],
+
+Cell[BoxData["\<\"Iteration 1 took 1.674 minutes. 1 remaining iterations. \
+Est. time: 1.674 minutes.\"\>"], "Print",
+ CellChangeTimes->{3.5642339487046194`*^9}],
+
+Cell[BoxData["\<\"Iteration 2 took 1.538 minutes. 0 remaining iterations. \
+Est. time: 0. minutes.\"\>"], "Print",
+ CellChangeTimes->{3.5642340410088987`*^9}]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  StyleBox[
+   RowBox[{"Part", "::", "partd"}], "MessageName"], 
+  RowBox[{
+  ":", " "}], "\<\"Part specification \[NoBreak]\\!\\(Null \
+\[LeftDoubleBracket] 2 \[RightDoubleBracket]\\)\[NoBreak] is longer than \
+depth of object. \\!\\(\\*ButtonBox[\\\"\[RightSkeleton]\\\", ButtonStyle->\\\
+\"Link\\\", ButtonFrame->None, \
+ButtonData:>\\\"paclet:ref/message/General/partd\\\", ButtonNote -> \
+\\\"Part::partd\\\"]\\)\"\>"}]], "Message", "MSG",
+ CellChangeTimes->{3.564234041099904*^9}],
+
+Cell[BoxData[
+ TagBox[
+  TagBox[GridBox[{
+     {"\<\"Param\"\>", "\<\"Est.\"\>", "\<\"SE\"\>", "\<\"True\"\>"},
+     {"\[Gamma]11", 
+      InterpretationBox["\<\" 1.004\"\>",
+       1.0041470813177515`,
+       AutoDelete->True], 
+      InterpretationBox["\<\" 0.005\"\>",
+       0.0049223386597513335`,
+       AutoDelete->True], 
+      InterpretationBox["\<\" 1.000\"\>",
+       1,
+       Editable->False]},
+     {"\[Gamma]12", 
+      InterpretationBox["\<\"-3.989\"\>",
+       -3.9891828623339953`,
+       AutoDelete->True], 
+      InterpretationBox["\<\" 0.004\"\>",
+       0.004006004275027297,
+       AutoDelete->True], 
+      InterpretationBox["\<\"-4.000\"\>",
+       -4,
+       Editable->False]},
+     {"\[Gamma]13", 
+      InterpretationBox["\<\" 4.972\"\>",
+       4.971522515545273,
+       AutoDelete->True], 
+      InterpretationBox["\<\" 0.040\"\>",
+       0.0402774258859031,
+       AutoDelete->True], 
+      InterpretationBox["\<\" 5.000\"\>",
+       5,
+       Editable->False]},
+     {"\[Gamma]2", 
+      InterpretationBox["\<\" 1.013\"\>",
+       1.0133240715545317`,
+       AutoDelete->True], 
+      InterpretationBox["\<\" 0.038\"\>",
+       0.03843679565552392,
+       AutoDelete->True], 
+      InterpretationBox["\<\" 1.000\"\>",
+       1,
+       Editable->False]},
+     {"\[Beta]n1", 
+      InterpretationBox["\<\" 3.015\"\>",
+       3.014549958246819,
+       AutoDelete->True], 
+      InterpretationBox["\<\" 0.092\"\>",
+       0.09249458731924334,
+       AutoDelete->True], 
+      InterpretationBox["\<\" 3.000\"\>",
+       3,
+       Editable->False]},
+     {"\[Beta]k1", 
+      InterpretationBox["\<\" 1.933\"\>",
+       1.9325019688581235`,
+       AutoDelete->True], 
+      InterpretationBox["\<\" 0.078\"\>",
+       0.0782547063262634,
+       AutoDelete->True], 
+      InterpretationBox["\<\" 2.000\"\>",
+       2,
+       Editable->False]},
+     {"\[Beta]k2", 
+      InterpretationBox["\<\"-1.942\"\>",
+       -1.941894009747406,
+       AutoDelete->True], 
+      InterpretationBox["\<\" 0.008\"\>",
+       0.007788739984435613,
+       AutoDelete->True], 
+      InterpretationBox["\<\"-2.000\"\>",
+       -2,
+       Editable->False]},
+     {"\[Delta]", 
+      InterpretationBox["\<\" 0.348\"\>",
+       0.34847487102640584`,
+       AutoDelete->True], 
+      InterpretationBox["\<\" 0.026\"\>",
+       0.025945261597165637`,
+       AutoDelete->True], 
+      InterpretationBox["\<\" 0.500\"\>",
+       0.5,
+       AutoDelete->True]},
+     {"\[Rho]", 
+      InterpretationBox["\<\" 0.330\"\>",
+       0.329891626412053,
+       AutoDelete->True], 
+      InterpretationBox["\<\" 0.024\"\>",
+       0.023916631417956493`,
+       AutoDelete->True], 
+      InterpretationBox["\<\" 0.354\"\>",
+       0.35355339059327373`,
+       AutoDelete->True]},
+     {"\[Sigma]\[Epsilon]", 
+      InterpretationBox["\<\" 0.874\"\>",
+       0.8739305684438259,
+       AutoDelete->True], 
+      InterpretationBox["\<\" 0.034\"\>",
+       0.033837311517080165`,
+       AutoDelete->True], 
+      InterpretationBox["\<\" 1.000\"\>",
+       1.,
+       AutoDelete->True]},
+     {"\[Sigma]\[Eta]", 
+      InterpretationBox["\<\" 1.394\"\>",
+       1.3935216616110773`,
+       AutoDelete->True], 
+      InterpretationBox["\<\" 0.043\"\>",
+       0.04341942744230938,
+       AutoDelete->True], 
+      InterpretationBox["\<\" 1.414\"\>",
+       1.4142135623730951`,
+       AutoDelete->True]}
+    },
+    GridBoxAlignment->{
+     "Columns" -> {{Left}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+      "RowsIndexed" -> {}},
+    GridBoxSpacings->{"Columns" -> {
+        Offset[0.27999999999999997`], {
+         Offset[2.0999999999999996`]}, 
+        Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+        Offset[0.2], {
+         Offset[0.4]}, 
+        Offset[0.2]}, "RowsIndexed" -> {}}],
+   Function[BoxForm`e$, 
+    TableForm[BoxForm`e$]]],
+  NumberForm[#, {4, 3}, NumberSigns -> {"-", " "}]& ]], "Print",
+ CellChangeTimes->{3.5642340411299057`*^9}]
+}, Open  ]]
+},
+WindowSize->{1662, 888},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+ShowSelection->True,
+Magnification->2.3999998569488525`,
+FrontEndVersion->"8.0 for Microsoft Windows (64-bit) (October 6, 2011)",
+StyleDefinitions->"Default.nb",
+PrivateNotebookOptions -> {
+ "VersionedStylesheet" -> {"Default.nb"[8.] -> False}}
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[579, 22, 8671, 198, 2589, "Input"],
+Cell[CellGroupData[{
+Cell[9275, 224, 109, 1, 51, "Print"],
+Cell[9387, 227, 113, 1, 51, "Print"],
+Cell[9503, 230, 115, 1, 51, "Print"],
+Cell[9621, 233, 2877, 95, 430, "Print"],
+Cell[12501, 330, 161, 2, 51, "Print"],
+Cell[12665, 334, 158, 2, 51, "Print"]
+}, Open  ]],
+Cell[12838, 339, 510, 11, 55, "Message"],
+Cell[13351, 352, 3967, 128, 430, "Print"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)

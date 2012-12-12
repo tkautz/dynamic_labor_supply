@@ -1,0 +1,384 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 8.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[     14506,        375]
+NotebookOptionsPosition[     14226,        361]
+NotebookOutlinePosition[     14604,        377]
+CellTagsIndexPosition[     14561,        374]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"Clear", "[", "\"\<Global`*\>\"", "]"}], "\[IndentingNewLine]", 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{"Defines", " ", "the", " ", "directories"}], " ", 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+  "BaseDir", "=", 
+   "\"\<C:\\\\Users\\\\Tim\\\\Dropbox\\\\Current \
+Projects\\\\mathematica\\\\Tim\\\\dynamic_model\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"CodeDir", "=", 
+   RowBox[{"BaseDir", "<>", "\"\<\\\\code\>\""}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"DataDir", "=", 
+   RowBox[{"BaseDir", "<>", "\"\<\\\\data\>\""}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"FigDir", "=", 
+   RowBox[{"BaseDir", "<>", "\"\<\\\\figures\>\""}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"OutputDir", "=", 
+   RowBox[{"BaseDir", "<>", "\"\<\\\\output\>\""}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"TableDir", "=", 
+    RowBox[{"BaseDir", "<>", "\"\<\\\\tables\>\""}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Get", "[", 
+    RowBox[{"OutputDir", "<>", "\"\<\\\\Emax\>\""}], "]"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"\[CapitalPhi]", "[", "c_", "]"}], ":=", 
+   RowBox[{"CDF", "[", 
+    RowBox[{
+     RowBox[{"NormalDistribution", "[", 
+      RowBox[{"0", ",", "1"}], "]"}], ",", "c"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"\[Phi]", "[", "c_", "]"}], ":=", 
+    RowBox[{"PDF", "[", 
+     RowBox[{
+      RowBox[{"NormalDistribution", "[", 
+       RowBox[{"0", ",", "1"}], "]"}], ",", "c"}], "]"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GMult", "[", 
+    RowBox[{"a_", ",", "b_"}], "]"}], ":=", 
+   RowBox[{"(", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"prod", "=", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"VectorQ", "[", "a", "]"}], ",", 
+        RowBox[{"b", ".", "a"}], ",", 
+        RowBox[{"b", "*", "a"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"Return", "[", "prod", "]"}], ";"}], "\[IndentingNewLine]", 
+    ")"}]}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"loglik", "[", 
+    RowBox[{
+    "y_", ",", "d1_", ",", "d2_", ",", "d3_", ",", "h1_", ",", "h2_", ",", 
+     "h3_", ",", "w1_", ",", "w2_", ",", "w3_", ",", "z_", ",", "n_", ",", 
+     "k_", ",", "M_", ",", "\[Gamma]1_", ",", "\[Gamma]2_", ",", "\[Beta]n_", 
+     ",", "\[Beta]k_", ",", "\[Delta]_", ",", "\[Rho]_", ",", 
+     "\[Sigma]\[Epsilon]_", ",", "\[Sigma]\[Eta]_"}], "]"}], ":=", 
+   RowBox[{"(", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"minlog", "=", 
+      RowBox[{"10", "^", 
+       RowBox[{"-", "2000"}]}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"(*", " ", 
+      RowBox[{"defines", " ", "the", " ", "wage", " ", "error", " ", "term"}],
+       " ", "*)"}], "\[IndentingNewLine]", 
+     RowBox[{"\[Omega]1", "=", 
+      RowBox[{"w1", "-", 
+       RowBox[{"GMult", "[", 
+        RowBox[{"\[Gamma]1", ",", "z"}], "]"}], "-", 
+       RowBox[{"GMult", "[", 
+        RowBox[{"\[Gamma]2", ",", "h1"}], "]"}]}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"\[Omega]2", "=", 
+      RowBox[{"w2", "-", 
+       RowBox[{"GMult", "[", 
+        RowBox[{"\[Gamma]1", ",", "z"}], "]"}], "-", 
+       RowBox[{"GMult", "[", 
+        RowBox[{"\[Gamma]2", ",", "h2"}], "]"}]}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"\[Omega]3", "=", 
+      RowBox[{"w3", "-", 
+       RowBox[{"GMult", "[", 
+        RowBox[{"\[Gamma]1", ",", "z"}], "]"}], "-", 
+       RowBox[{"GMult", "[", 
+        RowBox[{"\[Gamma]2", ",", "h3"}], "]"}]}]}], ";", 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{"(*", " ", 
+      RowBox[{
+      "defines", " ", "the", " ", "observed", " ", "part", " ", "of", " ", 
+       "the", " ", "choice", " ", "term"}], " ", "*)"}], 
+     "\[IndentingNewLine]", 
+     RowBox[{"\[Xi]1", "=", 
+      RowBox[{
+       RowBox[{"GMult", "[", 
+        RowBox[{"\[Gamma]1", ",", "z"}], "]"}], "+", 
+       RowBox[{"GMult", "[", 
+        RowBox[{"\[Gamma]2", ",", "h1"}], "]"}], "-", 
+       RowBox[{"GMult", "[", 
+        RowBox[{"\[Beta]n", ",", "n"}], "]"}], "-", 
+       RowBox[{"GMult", "[", 
+        RowBox[{"\[Beta]k", ",", "k"}], "]"}], "+", 
+       RowBox[{"\[Delta]", "*", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"FEmaxT1", "[", 
+           RowBox[{"y", ",", "z", ",", 
+            RowBox[{"h1", "+", "1"}], ",", "n", ",", "k", ",", "\[Gamma]1", 
+            ",", "\[Gamma]2", ",", "\[Beta]k", ",", "\[Beta]n", ",", 
+            "\[Sigma]\[Epsilon]", ",", "\[Delta]"}], "]"}], "-", 
+          RowBox[{"FEmaxT1", "[", 
+           RowBox[{
+           "y", ",", "z", ",", "h1", ",", "n", ",", "k", ",", "\[Gamma]1", 
+            ",", "\[Gamma]2", ",", "\[Beta]k", ",", "\[Beta]n", ",", 
+            "\[Sigma]\[Epsilon]", ",", "\[Delta]"}], "]"}]}], ")"}]}]}]}], 
+     ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{"\[Xi]2", "=", 
+      RowBox[{
+       RowBox[{"GMult", "[", 
+        RowBox[{"\[Gamma]1", ",", "z"}], "]"}], "+", 
+       RowBox[{"GMult", "[", 
+        RowBox[{"\[Gamma]2", ",", "h2"}], "]"}], "-", 
+       RowBox[{"GMult", "[", 
+        RowBox[{"\[Beta]n", ",", "n"}], "]"}], "-", 
+       RowBox[{"GMult", "[", 
+        RowBox[{"\[Beta]k", ",", "k"}], "]"}], "+", 
+       RowBox[{"\[Delta]", "*", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"FEmaxT", "[", 
+           RowBox[{"y", ",", "z", ",", 
+            RowBox[{"h2", "+", "1"}], ",", "n", ",", "k", ",", "\[Gamma]1", 
+            ",", "\[Gamma]2", ",", "\[Beta]k", ",", "\[Beta]n", ",", 
+            "\[Sigma]\[Epsilon]"}], "]"}], "-", 
+          RowBox[{"FEmaxT", "[", 
+           RowBox[{
+           "y", ",", "z", ",", "h2", ",", "n", ",", "k", ",", "\[Gamma]1", 
+            ",", "\[Gamma]2", ",", "\[Beta]k", ",", "\[Beta]n", ",", 
+            "\[Sigma]\[Epsilon]"}], "]"}]}], ")"}]}]}]}], ";", 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{"\[Xi]3", "=", 
+      RowBox[{
+       RowBox[{"GMult", "[", 
+        RowBox[{"\[Gamma]1", ",", "z"}], "]"}], "+", 
+       RowBox[{"GMult", "[", 
+        RowBox[{"\[Gamma]2", ",", "h3"}], "]"}], "-", 
+       RowBox[{"GMult", "[", 
+        RowBox[{"\[Beta]n", ",", "n"}], "]"}], "-", 
+       RowBox[{"GMult", "[", 
+        RowBox[{"\[Beta]k", ",", "k"}], "]"}]}]}], ";", "\[IndentingNewLine]",
+      "\[IndentingNewLine]", 
+     RowBox[{"(*", " ", 
+      RowBox[{
+       RowBox[{"defines", " ", "the", " ", "log"}], "-", "likelihood"}], " ", 
+      "*)"}], "\[IndentingNewLine]", 
+     RowBox[{"\[ScriptCapitalL]", "=", 
+      RowBox[{"-", 
+       RowBox[{"Total", "[", " ", 
+        RowBox[{"Table", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"d1", "[", 
+             RowBox[{"[", "i", "]"}], "]"}], "*", 
+            RowBox[{"Log", "[", 
+             RowBox[{"Max", "[", 
+              RowBox[{
+               RowBox[{"(", "  ", 
+                RowBox[{
+                 RowBox[{"(", 
+                  RowBox[{"1", "-", 
+                   RowBox[{"\[CapitalPhi]", "[", 
+                    FractionBox[
+                    RowBox[{
+                    RowBox[{"-", 
+                    RowBox[{"\[Xi]1", "[", 
+                    RowBox[{"[", "i", "]"}], "]"}]}], "-", 
+                    RowBox[{"\[Rho]", "*", 
+                    FractionBox["\[Sigma]\[Epsilon]", "\[Sigma]\[Eta]"], "*", 
+                    RowBox[{"\[Omega]1", "[", 
+                    RowBox[{"[", "i", "]"}], "]"}]}]}], 
+                    RowBox[{"\[Sigma]\[Epsilon]", "*", 
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{"1", "-", 
+                    RowBox[{"\[Rho]", "^", "2"}]}], ")"}], "^", ".5"}]}]], 
+                    "]"}]}], ")"}], "*", 
+                 FractionBox["1", "\[Sigma]\[Eta]"], 
+                 RowBox[{"\[Phi]", "[", 
+                  FractionBox[
+                   RowBox[{"\[Omega]1", "[", 
+                    RowBox[{"[", "i", "]"}], "]"}], "\[Sigma]\[Eta]"], 
+                  "]"}]}], " ", ")"}], ",", "minlog"}], "]"}], "]"}]}], "+", 
+           RowBox[{
+            RowBox[{"(", 
+             RowBox[{"1", "-", 
+              RowBox[{"d1", "[", 
+               RowBox[{"[", "i", "]"}], "]"}]}], ")"}], "*", 
+            RowBox[{"Log", "[", 
+             RowBox[{"Max", "[", 
+              RowBox[{
+               RowBox[{"\[CapitalPhi]", "[", 
+                FractionBox[
+                 RowBox[{"-", 
+                  RowBox[{"\[Xi]1", "[", 
+                   RowBox[{"[", "i", "]"}], "]"}]}], "\[Sigma]\[Epsilon]"], 
+                "]"}], ",", "minlog"}], "]"}], "]"}]}], "\[IndentingNewLine]",
+            "+", 
+           RowBox[{
+            RowBox[{"d2", "[", 
+             RowBox[{"[", "i", "]"}], "]"}], "*", 
+            RowBox[{"Log", "[", 
+             RowBox[{"Max", "[", 
+              RowBox[{
+               RowBox[{"(", "  ", 
+                RowBox[{
+                 RowBox[{"(", 
+                  RowBox[{"1", "-", 
+                   RowBox[{"\[CapitalPhi]", "[", 
+                    FractionBox[
+                    RowBox[{
+                    RowBox[{"-", 
+                    RowBox[{"\[Xi]2", "[", 
+                    RowBox[{"[", "i", "]"}], "]"}]}], "-", 
+                    RowBox[{"\[Rho]", "*", 
+                    FractionBox["\[Sigma]\[Epsilon]", "\[Sigma]\[Eta]"], "*", 
+                    RowBox[{"\[Omega]2", "[", 
+                    RowBox[{"[", "i", "]"}], "]"}]}]}], 
+                    RowBox[{"\[Sigma]\[Epsilon]", "*", 
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{"1", "-", 
+                    RowBox[{"\[Rho]", "^", "2"}]}], ")"}], "^", ".5"}]}]], 
+                    "]"}]}], ")"}], "*", 
+                 FractionBox["1", "\[Sigma]\[Eta]"], 
+                 RowBox[{"\[Phi]", "[", 
+                  FractionBox[
+                   RowBox[{"\[Omega]2", "[", 
+                    RowBox[{"[", "i", "]"}], "]"}], "\[Sigma]\[Eta]"], 
+                  "]"}]}], " ", ")"}], ",", "minlog"}], "]"}], "]"}]}], "+", 
+           RowBox[{
+            RowBox[{"(", 
+             RowBox[{"1", "-", 
+              RowBox[{"d2", "[", 
+               RowBox[{"[", "i", "]"}], "]"}]}], ")"}], "*", 
+            RowBox[{"Log", "[", 
+             RowBox[{"Max", "[", 
+              RowBox[{
+               RowBox[{"\[CapitalPhi]", "[", 
+                FractionBox[
+                 RowBox[{"-", 
+                  RowBox[{"\[Xi]2", "[", 
+                   RowBox[{"[", "i", "]"}], "]"}]}], "\[Sigma]\[Epsilon]"], 
+                "]"}], ",", "minlog"}], "]"}], "]"}]}], "\[IndentingNewLine]",
+            "+", 
+           RowBox[{
+            RowBox[{"d3", "[", 
+             RowBox[{"[", "i", "]"}], "]"}], "*", 
+            RowBox[{"Log", "[", 
+             RowBox[{"Max", "[", 
+              RowBox[{
+               RowBox[{"(", "  ", 
+                RowBox[{
+                 RowBox[{"(", 
+                  RowBox[{"1", "-", 
+                   RowBox[{"\[CapitalPhi]", "[", 
+                    FractionBox[
+                    RowBox[{
+                    RowBox[{"-", 
+                    RowBox[{"\[Xi]3", "[", 
+                    RowBox[{"[", "i", "]"}], "]"}]}], "-", 
+                    RowBox[{"\[Rho]", "*", 
+                    FractionBox["\[Sigma]\[Epsilon]", "\[Sigma]\[Eta]"], "*", 
+                    RowBox[{"\[Omega]3", "[", 
+                    RowBox[{"[", "i", "]"}], "]"}]}]}], 
+                    RowBox[{"\[Sigma]\[Epsilon]", "*", 
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{"1", "-", 
+                    RowBox[{"\[Rho]", "^", "2"}]}], ")"}], "^", ".5"}]}]], 
+                    "]"}]}], ")"}], "*", 
+                 FractionBox["1", "\[Sigma]\[Eta]"], 
+                 RowBox[{"\[Phi]", "[", 
+                  FractionBox[
+                   RowBox[{"\[Omega]3", "[", 
+                    RowBox[{"[", "i", "]"}], "]"}], "\[Sigma]\[Eta]"], 
+                  "]"}]}], " ", ")"}], ",", "minlog"}], "]"}], "]"}]}], "+", 
+           RowBox[{
+            RowBox[{"(", 
+             RowBox[{"1", "-", 
+              RowBox[{"d3", "[", 
+               RowBox[{"[", "i", "]"}], "]"}]}], ")"}], "*", 
+            RowBox[{"Log", "[", 
+             RowBox[{"Max", "[", 
+              RowBox[{
+               RowBox[{"\[CapitalPhi]", "[", 
+                FractionBox[
+                 RowBox[{"-", 
+                  RowBox[{"\[Xi]3", "[", 
+                   RowBox[{"[", "i", "]"}], "]"}]}], "\[Sigma]\[Epsilon]"], 
+                "]"}], ",", "minlog"}], "]"}], "]"}]}]}], 
+          "\[IndentingNewLine]", ",", 
+          RowBox[{"{", 
+           RowBox[{"i", ",", "1", ",", "M", ",", "1"}], "}"}]}], "]"}], 
+        "\[IndentingNewLine]", "\[IndentingNewLine]", "]"}]}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Return", "[", "\[ScriptCapitalL]", "]"}], ";"}], 
+    "\[IndentingNewLine]", ")"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Save", "[", 
+   RowBox[{
+    RowBox[{"OutputDir", "<>", "\"\<\\\\likelihood\>\""}], ",", "loglik"}], 
+   "]"}], ";"}]}], "Input",
+ CellChangeTimes->{{3.561867011196878*^9, 3.561867013156881*^9}, {
+  3.5618673680785127`*^9, 3.5618673908836355`*^9}, {3.561867460909919*^9, 
+  3.561867467810986*^9}, {3.561867562231429*^9, 3.5618676989950237`*^9}, {
+  3.56186773366018*^9, 3.561867886888875*^9}, {3.561867922405018*^9, 
+  3.561867926300023*^9}}]
+},
+WindowSize->{1662, 888},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+Magnification->1.7000001668930054`,
+FrontEndVersion->"8.0 for Microsoft Windows (64-bit) (October 6, 2011)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[557, 20, 13665, 339, 1926, "Input"]
+}
+]
+*)
+
+(* End of internal cache information *)
